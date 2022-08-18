@@ -33,6 +33,7 @@ public class UserController {
 
     @PostMapping
     private UserDto addUser(@RequestBody UserDto user) {
+        log.info("Creating, user={}", user);
         validate(user);
         var s = userService.addNew(UserMapper.toUser(user));
         return UserMapper.toUserDto(s);
