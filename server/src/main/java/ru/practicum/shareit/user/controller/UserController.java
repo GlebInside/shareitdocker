@@ -34,18 +34,9 @@ public class UserController {
     @PostMapping
     private UserDto addUser(@RequestBody UserDto user) {
         log.info("Creating, user={}", user);
-        validate(user);
+//        validate(user);
         var s = userService.addNew(UserMapper.toUser(user));
         return UserMapper.toUserDto(s);
-    }
-
-    private void validate(UserDto user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new ValidationException(HttpStatus.BAD_REQUEST, "email cannot be empty");
-        }
-        if (!user.getEmail().contains("@")) {
-            throw new ValidationException(HttpStatus.BAD_REQUEST, "email should contain @");
-        }
     }
 
     @PatchMapping("/{id}")

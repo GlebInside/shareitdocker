@@ -34,11 +34,8 @@ public class BookingController {
     @GetMapping("/{bookingId}")
     private BookingDto get(@PathVariable int bookingId, @RequestHeader("X-Sharer-User-Id") int userId) {
         log.info("Get booking {}, userId={}", bookingId, userId);
-        var dto = new BookingDto();
-        dto.setId(1);
-        dto.setStatus(Status.APPROVED);
-        return dto;
-//        return BookingMapper.toDto(bookingService.getById(bookingId, userId));
+
+        return BookingMapper.toDto(bookingService.getById(bookingId, userId));
     }
 
     @GetMapping

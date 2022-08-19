@@ -1,4 +1,4 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.item;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,15 +10,17 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.shareit.booking.dto.BookItemRequestDto;
 import ru.practicum.shareit.booking.dto.BookingState;
 import ru.practicum.shareit.client.BaseClient;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 
 import java.util.Map;
 
 @Service
-public class BookingClient extends BaseClient {
-    private static final String API_PREFIX = "/bookings";
+public class ItemClient extends BaseClient {
+    private static final String API_PREFIX = "/items";
 
     @Autowired
-    public BookingClient(@Value("${shareit-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public ItemClient(@Value("${shareit-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
@@ -37,19 +39,27 @@ public class BookingClient extends BaseClient {
     }
 
 
-    public ResponseEntity<Object> bookItem(long userId, BookItemRequestDto requestDto) {
-        return post("", userId, requestDto);
+    public ResponseEntity<Object> addItem(ItemDto itemDto, int userId) {
+        return post("", userId, itemDto);
     }
 
-    public ResponseEntity<Object> getBooking(long userId, Long bookingId) {
-        return get("/" + bookingId, userId);
+    public ResponseEntity<Object> update(int itemId, ItemDto itemDto, int userId) {
+        return patch("/" + itemId, userId, itemDto);
     }
 
-    public ResponseEntity<Object> update(int bookingId, int ownerId, Boolean approved) {
-        return patch("/" + bookingId + "?approved=" + approved, ownerId);
+    public ResponseEntity<Object> getById(int userId, int itemId) {
+        return get("/" + itemId, userId);
     }
 
-    public ResponseEntity<Object> getAllByOwnerAndStatus(int ownerId, BookingState state) {
-        return get("/owner?state=" + state, ownerId);
+    public ResponseEntity<Object> getAllUserItems(int userId) {
+        return get("", userId);
+    }
+
+    public ResponseEntity<Object> searchAvailable(String text) {
+        return get("/search?text=" + text);
+    }
+
+    public ResponseEntity<Object> addComment(int itemId, CommentDto dto, int authorId) {
+        return post("/" + itemId + "/comment", authorId, dto);
     }
 }

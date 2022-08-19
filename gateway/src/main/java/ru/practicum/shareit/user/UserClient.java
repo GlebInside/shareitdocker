@@ -28,13 +28,8 @@ public class UserClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> getBookings(long userId, BookingState state, Integer from, Integer size) {
-        Map<String, Object> parameters = Map.of(
-                "state", state.name(),
-                "from", from,
-                "size", size
-        );
-        return get("?state={state}&from={from}&size={size}", userId, parameters);
+    public ResponseEntity<Object> getAllUsers() {
+        return get("");
     }
 
 
@@ -42,11 +37,16 @@ public class UserClient extends BaseClient {
         return post("", userDto);
     }
 
-    public ResponseEntity<Object> getBooking(long userId, Long bookingId) {
-        return get("/" + bookingId, userId);
-    }
 
     public ResponseEntity<Object> update(UserDto user, int id) {
         return patch("/" + id, user);
+    }
+
+    public  ResponseEntity<Object>  getById(int userId) {
+        return get("/" + userId);
+    }
+
+    public ResponseEntity<Object> delete(int userId) {
+        return delete("/" + userId);
     }
 }
