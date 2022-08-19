@@ -5,9 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 @RestController
 @AllArgsConstructor
 @RequestMapping(path = "/requests")

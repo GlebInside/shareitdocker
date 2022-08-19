@@ -35,7 +35,7 @@ public class ItemRequestClient extends BaseClient {
 
     public ResponseEntity<Object> getWithPagination(int requesterId, int from, Integer size) {
         var path = "/all?from=" + from;
-        if (size != null){
+        if (size != null) {
             path += "&size=" + size;
         }
         return get(path, requesterId);
