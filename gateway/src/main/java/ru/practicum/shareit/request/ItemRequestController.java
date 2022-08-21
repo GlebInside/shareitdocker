@@ -29,7 +29,7 @@ public class ItemRequestController {
 
 
     @GetMapping(path = "all")
-    ResponseEntity<Object> getWithPagination(@RequestHeader("X-Sharer-User-Id") int requesterId, @RequestParam(defaultValue = "0") int from, @RequestParam(required = false) Integer size) {
+    public ResponseEntity<Object> getWithPagination(@RequestHeader("X-Sharer-User-Id") int requesterId, @RequestParam(defaultValue = "0") int from, @RequestParam(required = false) Integer size) {
         return itemRequestClient.getWithPagination(requesterId, from, size);
     }
 }

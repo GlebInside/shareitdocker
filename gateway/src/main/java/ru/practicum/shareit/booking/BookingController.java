@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookItemRequestDto;
 import ru.practicum.shareit.booking.dto.BookingState;
@@ -18,6 +19,7 @@ import javax.validation.constraints.PositiveOrZero;
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class BookingController {
 	private final BookingClient bookingClient;
 
@@ -33,7 +35,7 @@ public class BookingController {
 	}
 
 	@GetMapping("/owner")
-	private ResponseEntity<Object> getByOwner(@RequestParam(defaultValue = "ALL", name = "state") String statusString, @RequestHeader("X-Sharer-User-Id") int ownerId) {
+	public ResponseEntity<Object> getByOwner(@RequestParam(defaultValue = "ALL", name = "state") String statusString, @RequestHeader("X-Sharer-User-Id") int ownerId) {
 		BookingState state = BookingState.from(statusString)
 				.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + statusString));
 		return bookingClient.getAllByOwnerAndStatus(ownerId, state);
@@ -47,7 +49,7 @@ public class BookingController {
 	}
 
 	@PatchMapping("/{bookingId}")
-	private ResponseEntity<Object> updateBooking(@PathVariable int bookingId, @RequestHeader("X-Sharer-User-Id") int ownerId, Boolean approved) {
+	public ResponseEntity<Object> updateBooking(@PathVariable int bookingId, @RequestHeader("X-Sharer-User-Id") int ownerId, Boolean approved) {
 		if (approved == null) {
 			throw new ValidationException(HttpStatus.BAD_REQUEST, "");
 		}
